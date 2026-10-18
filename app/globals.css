@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+
+  /* Black and burgundy brand palette */
+  --background: #faf7f5;
+  --foreground: #111111;
+
+  --primary: #800020;
+  --primary-hover: #5a0017;
+  --primary-light: #f2e5e9;
+  --accent: #800020;
+
+  --surface: #ffffff;
+  --surface-muted: #f5f2f3;
+  --surface-soft: #eee8eb;
+
+  --muted: #62575b;
+  --border: #e4dfe1;
+
+  --success: #237a57;
+  --danger: #c83c45;
+
+  --font-body: var(--font-inter);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-inter);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  accent-color: var(--primary);
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary-hover);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Animated inspection dial used by the homepage hero */
+.inspection-dial {
+  background:
+    radial-gradient(circle at 25% 75%, rgba(79, 70, 229, 0.09), transparent 48%),
+    linear-gradient(rgba(99, 102, 241, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.035) 1px, transparent 1px);
+  background-size: auto, 44px 44px, 44px 44px;
+  border-radius: 50%;
+}
+
+.dial-orbit {
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.dial-orbit-outer { animation: dial-orbit-spin 28s linear infinite; } /* Clockwise */
+.dial-orbit-inner { animation: dial-orbit-spin-reverse 20s linear infinite; } /* Counterclockwise */
+.dial-orbit-third { animation: none; }
+
+.dial-third-ticks {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dial-orbit-spin 16s linear infinite;
+  will-change: transform;
+}
+
+.dial-hand {
+  transform: translate(-50%, -100%) rotate(-48deg);
+  transform-origin: 50% 100%;
+  animation: inspection-sweep 8s linear infinite; /* Clockwise */
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.8), 0 0 24px rgba(34, 211, 238, 0.45);
+}
+
+.slide-up { animation: dial-slide-up 700ms ease-out both; }
+
+@keyframes inspection-sweep {
+  from { transform: translate(-50%, -100%) rotate(-48deg); }
+  to { transform: translate(-50%, -100%) rotate(312deg); }
+}
+
+@keyframes dial-orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes dial-orbit-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes dial-slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dial-hand,
+  .dial-orbit-outer,
+  .dial-orbit-inner,
+  .dial-orbit-third,
+  .dial-third-ticks,
+  .slide-up { animation: none; }
+}
+

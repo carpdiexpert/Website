@@ -1,0 +1,18 @@
+export const CAR_DATA: Record<string, string[]> = {
+  "Maruti Suzuki": ["Alto K10", "Baleno", "Brezza", "Dzire", "Ertiga", "Fronx", "Grand Vitara", "Swift", "WagonR"],
+  Hyundai: ["Creta", "Exter", "i20", "Venue", "Verna", "Alcazar", "Tucson"],
+  Tata: ["Altroz", "Harrier", "Nexon", "Punch", "Safari", "Tiago", "Tigor", "Curvv"],
+  Mahindra: ["3XO", "Scorpio-N", "Thar", "XUV 3XO", "XUV700", "Bolero"],
+  Toyota: ["Fortuner", "Glanza", "Hyryder", "Innova Crysta", "Innova Hycross", "Urban Cruiser"],
+  Honda: ["Amaze", "City", "Elevate"],
+  Kia: ["Carens", "Seltos", "Sonet", "Carnival"],
+  Volkswagen: ["Taigun", "Virtus", "Tiguan"],
+  Skoda: ["Kushaq", "Slavia", "Kodiaq"],
+  MG: ["Astor", "Comet EV", "Hector", "ZS EV", "Windsor EV"],
+  BYD: ["Atto 3", "Seal", "eMax 7"],
+  BMW: ["3 Series", "5 Series", "X1", "X3", "X5"],
+  Mercedes: ["A-Class", "C-Class", "E-Class", "GLA", "GLE"],
+  Audi: ["A4", "A6", "Q3", "Q5", "Q7"],
+  Tesla: ["Model 3", "Model Y"],
+  Other: ["Other / not listed"],
+};
