@@ -323,21 +323,10 @@ export default function CarPDIExpertSampleReportPage() {
 <main className="min-h-screen overflow-hidden bg-white text-slate-900">
             {/* HERO — left-aligned copy with animated AI report scanning visual */}
             <section className="relative overflow-hidden bg-[#0B1220] text-white">
-                <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-blue-600/20 blur-3xl" />
-                <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 left-1/4 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
-                <div className="relative mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:px-12 lg:py-24">
+<div className="relative mx-auto grid max-w-[1440px] items-center gap-10 px-5 pt-6 pb-12 sm:gap-12 sm:px-8 sm:pt-8 sm:pb-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:px-12 lg:pt-10 lg:pb-20">
                     {/* Left: hero content */}
-                    <div className="relative z-10 text-left">
-                        <div className="mb-7 flex justify-start">
-                            <Image
-                                src="/carpdiexpert-logo.png"
-                                alt="CarPDIExpert — Professional PDI Service"
-                                width={240}
-                                height={160}
-                                priority
-                                className="h-16 w-auto object-contain sm:h-20"
-                            />
-                        </div>
+                    <div className="relative z-0 text-left">
+
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
                             See What a Professional Vehicle Inspection Report Looks Like
                         </p>

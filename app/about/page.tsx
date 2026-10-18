@@ -68,22 +68,9 @@ export default function AboutPage() {
     <main className="overflow-hidden bg-white text-slate-900">
       {/* HERO */}
       <section className="relative isolate bg-[#0B1220] text-white">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_15%,rgba(37,99,235,0.3),transparent_45%)]" />
-        <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-10 -z-10 h-72 w-72 rounded-full border border-sky-400/10 motion-safe:animate-[spin_28s_linear_infinite]" />
-        <div aria-hidden="true" className="pointer-events-none absolute -right-12 top-20 -z-10 h-52 w-52 rounded-full border border-dashed border-cyan-300/20 motion-safe:animate-[spin_20s_linear_infinite]" />
 
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 sm:py-24 lg:grid-cols-2 lg:py-28">
           <div className="relative z-10">
-            <div className="mb-7 flex items-center">
-              <Image
-                src="/carpdiexpert-logo.png"
-                alt="CarPDIExpert"
-                width={240}
-                height={120}
-                priority
-                className="h-16 w-auto object-contain sm:h-20"
-              />
-            </div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-400">
               About CarpdiExpert
             </p>
