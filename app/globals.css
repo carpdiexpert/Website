@@ -175,4 +175,23 @@ svg {
   .dial-third-ticks,
   .slide-up { animation: none; }
 }
+.pdi-scan-vertical {
+  left: 50%;
+  animation: pdi-scan-center 3s ease-in-out infinite alternate;
+}
 
+@keyframes pdi-scan-center {
+  from {
+    left: 10%;
+  }
+  to {
+    left: 60%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdi-scan-vertical {
+    animation: none;
+    left: 30%;
+  }
+}

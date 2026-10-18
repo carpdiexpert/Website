@@ -118,45 +118,50 @@ export default function CityLandingClient({ citySlug }: Props) {
 
   return (
     <main className="overflow-hidden bg-white text-slate-900">
-      {/* City hero */}
-      <section className="relative isolate bg-[#0B1220] text-white">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_20%,rgba(56,189,248,0.18),transparent_45%)]" />
-
-        <div className="mx-auto max-w-7xl px-6 py-20 sm:py-24 lg:py-28">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-400">
-            CarPDIExpert / {city.name}
-          </p>
-
-          <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
-            Car inspection services in
-            <span className="block text-sky-400">{city.name}</span>
-          </h1>
-
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            Explore vehicle inspection options and transparent listed prices
-            before buying a used car or accepting delivery of a new one.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="#pricing"
-              className={primaryButtonClass}
-            >
-              View inspection prices
-            </Link>
-
-            <Link
-              href="#book"
-              className="inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/5 px-6 py-3 font-bold text-white transition-colors duration-200 hover:border-sky-400 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1220]"
-            >
-              Send an enquiry
-            </Link>
+      {/* City hero with animated horizontal and vertical inspection scans */}
+      <section className="relative isolate overflow-hidden bg-[#061426] text-white">
+        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_20%,rgba(0,210,255,0.20),transparent_48%)]" />
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12 lg:py-20">
+          <div className="relative z-10">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-300">
+              CarPDIExpert / {city.name}
+            </p>
+            <h1 className="mt-5 max-w-2xl text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+              Professional car PDI service in <span className="text-cyan-300">{city.name}</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-200">
+              Before you sign, pay or accept delivery, understand the car you are buying. Explore vehicle inspection options and transparent listed prices.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="#pricing" className={primaryButtonClass}>View inspection prices</Link>
+              <Link href="#book" className="inline-flex items-center justify-center rounded-xl border border-white/25 bg-white/5 px-6 py-3 font-bold text-white transition-colors duration-200 hover:border-cyan-300 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#061426]">Send an enquiry</Link>
+            </div>
+            <p className="mt-6 text-sm text-slate-400">Location: {city.name}, {city.state}</p>
           </div>
 
-          <p className="mt-6 text-sm text-slate-400">
-            Location: {city.name}, {city.state}
-          </p>
+          <div className="relative isolate overflow-hidden rounded-2xl border border-cyan-300/40 bg-[#061426] shadow-[0_0_45px_rgba(0,195,255,0.15)]">
+            <img
+              src="/carpdiexpert-hero.png"
+              alt={`CarPDIExpert professional pre-delivery inspection service with 400 inspection checkpoints in ${city.name}`}
+              width={1536}
+              height={1024}
+              fetchPriority="high"
+              className="block h-auto w-full object-cover"
+            />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+<div className="pdi-scan-vertical absolute top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-300 to-transparent shadow-[0_0_16px_4px_rgba(34,211,238,0.8)]" />
+              <div className="absolute inset-0 bg-cyan-300/[0.035]" />
+            </div>
+            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10" />
+          </div>
         </div>
+        <style jsx>{`
+          .pdi-scan-horizontal { animation: pdi-scan-h 4.8s ease-in-out infinite; }
+          .pdi-scan-vertical { animation: pdi-scan-v 6.2s ease-in-out infinite; }
+          @keyframes pdi-scan-h { 0%, 100% { top: 4%; opacity: .25; } 50% { top: 96%; opacity: .95; } }
+          @keyframes pdi-scan-v { 0%, 100% { left: 4%; opacity: .25; } 50% { left: 96%; opacity: .95; } }
+          @media (prefers-reduced-motion: reduce) { .pdi-scan-horizontal, .pdi-scan-vertical { animation: none; opacity: .55; } }
+        `}</style>
       </section>
 
       {/* Pricing */}
