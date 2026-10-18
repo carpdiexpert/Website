@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 import Link from "next/link";
 import { CITIES } from "@/lib/cities";
+
+
+export const metadata: Metadata = pageMetadata({
+  title: "Car Inspection Services | PDI, Used Car PPI & EV Checks",
+  description: "Explore CarpdiExpert car inspection services, including new-car pre-delivery inspection, luxury-car inspection, EV checks and used-car pre-purchase inspection.",
+  path: "/services",
+});
 
 const services = [
   {

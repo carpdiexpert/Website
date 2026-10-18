@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+
+
+export const metadata: Metadata = pageMetadata({
+  title: "Terms of Service",
+  description: "Review the terms and limitations that apply to CarpdiExpert vehicle inspection services and bookings.",
+  path: "/info/terms-of-service",
+});
 
 export default function Terms() {
   const sections = [

@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+
+
+export const metadata: Metadata = pageMetadata({
+  title: "Cancellation and Rescheduling Policy",
+  description: "Review CarpdiExpert's cancellation and rescheduling policy, including timing requirements and applicable fees.",
+  path: "/info/cancellation-policy",
+});
 
 export default function CancellationPolicy() {
   return (

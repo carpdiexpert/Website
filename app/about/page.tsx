@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 import Link from "next/link";
+
+
+export const metadata: Metadata = pageMetadata({
+  title: "About Us | Independent Car Inspection",
+  description: "Learn about CarpdiExpert's approach to pre-delivery inspection, used-car pre-purchase inspection, EV checks and informed vehicle-buying decisions.",
+  path: "/about",
+});
 
 const principles = [
   {
@@ -63,7 +72,7 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 sm:py-24 lg:grid-cols-2 lg:py-28">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-400">
-              About InspectMyCar
+              About CarpdiExpert
             </p>
 
             <h1 className="mt-5 text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
@@ -74,7 +83,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
-              Buying a car is a significant decision. InspectMyCar helps
+              Buying a car is a significant decision. CarpdiExpert helps
               customers understand a vehicle's observed condition through
               structured inspection services for new and used vehicles.
             </p>
@@ -99,7 +108,7 @@ export default function AboutPage() {
           {/* Brand statement card */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-9">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-2xl font-black">
-              IM
+              CE
             </div>
 
             <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
@@ -150,7 +159,7 @@ export default function AboutPage() {
             </p>
 
             <p>
-              InspectMyCar offers inspection options for new-car pre-delivery
+              CarpdiExpert offers inspection options for new-car pre-delivery
               checks, luxury vehicles, electric vehicles and used-car
               pre-purchase assessments.
             </p>

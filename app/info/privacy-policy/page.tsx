@@ -1,3 +1,12 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+
+
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy Policy",
+  description: "Read how CarpdiExpert handles information submitted through enquiries, inspection bookings and customer support.",
+  path: "/info/privacy-policy",
+});
 
 const sections = [
   {

@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
 import Link from "next/link";
+
+
+export const metadata: Metadata = pageMetadata({
+  title: "How Car Inspection Booking Works",
+  description: "See how to request a CarpdiExpert car inspection, coordinate your appointment and receive observations from the inspection process.",
+  path: "/how-it-works",
+});
 
 const steps = [
   {

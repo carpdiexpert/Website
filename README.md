@@ -34,3 +34,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## SEO implementation notes
+
+- Public pages use page-specific metadata and canonical URLs.
+- `/sitemap.xml` includes existing public routes and all configured city routes.
+- `/robots.txt` blocks API and internal utility paths. Admin pages emit `noindex` metadata; authentication remains the actual access control.
+- The email test utility emits `noindex` metadata.
+- Verify the production domain, sitemap, canonical URLs, structured data and index coverage in Google Search Console after deployment.
+- Business contact details, social profile URLs, WhatsApp number and service claims should only be published once verified.
+

@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: "How much does a PDI cost?",
-    a: "The reference pricing for standard cars starts at ₹1,499 and luxury cars at ₹2,499. Confirm the applicable package and price when booking, as service requirements may vary.",
+    a: "Pricing depends on your city and selected inspection package. Please check the Pricing page or your city-specific booking page for current rates, and confirm the applicable package before booking.",
   },
   {
     q: "What do I get after the inspection?",
