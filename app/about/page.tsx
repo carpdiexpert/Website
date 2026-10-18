@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { pageMetadata } from "@/lib/seo";
 
 import Link from "next/link";
@@ -67,10 +68,22 @@ export default function AboutPage() {
     <main className="overflow-hidden bg-white text-slate-900">
       {/* HERO */}
       <section className="relative isolate bg-[#0B1220] text-white">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_15%,rgba(37,99,235,0.3),transparent_45%)]" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_80%_15%,rgba(37,99,235,0.3),transparent_45%)]" />
+        <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-10 -z-10 h-72 w-72 rounded-full border border-sky-400/10 motion-safe:animate-[spin_28s_linear_infinite]" />
+        <div aria-hidden="true" className="pointer-events-none absolute -right-12 top-20 -z-10 h-52 w-52 rounded-full border border-dashed border-cyan-300/20 motion-safe:animate-[spin_20s_linear_infinite]" />
 
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 sm:py-24 lg:grid-cols-2 lg:py-28">
-          <div>
+          <div className="relative z-10">
+            <div className="mb-7 flex items-center">
+              <Image
+                src="/carpdiexpert-logo.png"
+                alt="CarPDIExpert"
+                width={240}
+                height={120}
+                priority
+                className="h-16 w-auto object-contain sm:h-20"
+              />
+            </div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-sky-400">
               About CarpdiExpert
             </p>
@@ -105,11 +118,25 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Brand statement card */}
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur sm:p-9">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-2xl font-black">
-              CE
+          {/* Animated brand statement card */}
+          <div className="relative isolate overflow-hidden rounded-3xl border border-sky-300/20 bg-white/[0.05] p-6 shadow-[0_0_60px_rgba(14,165,233,0.10)] backdrop-blur sm:p-9">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(14,165,233,0.16),transparent_60%)]" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full border border-sky-300/15 motion-safe:animate-[spin_18s_linear_infinite]" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full border border-dashed border-cyan-300/25 motion-safe:animate-[spin_12s_linear_infinite]" />
+            <div className="relative flex min-h-14 items-center">
+              <Image
+                src="/carpdiexpert-logo.png"
+                alt="CarPDIExpert logo"
+                width={220}
+                height={100}
+                className="h-14 w-auto object-contain sm:h-16"
+              />
+              <span className="ml-auto inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1.5 text-xs font-semibold text-emerald-200">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300 motion-reduce:animate-none" />
+                Buyer-focused
+              </span>
             </div>
+            <div aria-hidden="true" className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent motion-safe:animate-pulse" />
 
             <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
               Our approach

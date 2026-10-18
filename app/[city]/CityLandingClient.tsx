@@ -149,19 +149,38 @@ export default function CityLandingClient({ citySlug }: Props) {
               className="block h-auto w-full object-cover"
             />
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-<div className="pdi-scan-vertical absolute top-0 h-full w-[2px] bg-gradient-to-b from-transparent via-cyan-300 to-transparent shadow-[0_0_16px_4px_rgba(34,211,238,0.8)]" />
+<div className="pdi-scan-vertical absolute top-[20%] h-[60%] w-[2px] bg-gradient-to-b from-transparent via-cyan-300 to-transparent shadow-[0_0_16px_4px_rgba(34,211,238,0.8)]" />
               <div className="absolute inset-0 bg-cyan-300/[0.035]" />
             </div>
             <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10" />
           </div>
         </div>
-        <style jsx>{`
-          .pdi-scan-horizontal { animation: pdi-scan-h 4.8s ease-in-out infinite; }
-          .pdi-scan-vertical { animation: pdi-scan-v 6.2s ease-in-out infinite; }
-          @keyframes pdi-scan-h { 0%, 100% { top: 4%; opacity: .25; } 50% { top: 96%; opacity: .95; } }
-          @keyframes pdi-scan-v { 0%, 100% { left: 4%; opacity: .25; } 50% { left: 96%; opacity: .95; } }
-          @media (prefers-reduced-motion: reduce) { .pdi-scan-horizontal, .pdi-scan-vertical { animation: none; opacity: .55; } }
-        `}</style>
+
+<style jsx>{`
+  .pdi-scan-vertical {
+    animation: pdi-scan-v 2.2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pdi-scan-v {
+    from {
+      left: 23%;
+      opacity: 0.95;
+    }
+    to {
+      left: 82%;
+      opacity: 0.95;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pdi-scan-vertical {
+      animation: none;
+      left: 50%;
+      opacity: 0.55;
+    }
+  }
+`}</style>
+
       </section>
 
       {/* Pricing */}

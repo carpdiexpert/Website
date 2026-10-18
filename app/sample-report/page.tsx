@@ -321,63 +321,114 @@ export default function CarPDIExpertSampleReportPage() {
 
     return (
 <main className="min-h-screen overflow-hidden bg-white text-slate-900">
-            {/* HERO — aligned with the CarPDIExpert How It Works design */}
+            {/* HERO — left-aligned copy with animated AI report scanning visual */}
             <section className="relative overflow-hidden bg-[#0B1220] text-white">
                 <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-blue-600/20 blur-3xl" />
                 <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 left-1/4 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
-                <div className="relative mx-auto max-w-[1440px] px-5 py-20 sm:px-8 sm:py-24 lg:px-12 text-center">
-
-                    <div className="mb-8 flex justify-center">
-                        <Image
-                            src="/carpdiexpert-logo.png"
-                            alt="CarPDIExpert — Professional PDI Service"
-                            width={240}
-                            height={160}
-                            priority
-                            className="h-20 w-auto object-contain sm:h-24"
-                        />
+                <div className="relative mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:px-12 lg:py-24">
+                    {/* Left: hero content */}
+                    <div className="relative z-10 text-left">
+                        <div className="mb-7 flex justify-start">
+                            <Image
+                                src="/carpdiexpert-logo.png"
+                                alt="CarPDIExpert — Professional PDI Service"
+                                width={240}
+                                height={160}
+                                priority
+                                className="h-16 w-auto object-contain sm:h-20"
+                            />
+                        </div>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
+                            See What a Professional Vehicle Inspection Report Looks Like
+                        </p>
+                        <h1 className="mt-5 max-w-2xl text-4xl font-black leading-tight tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+                            CarPDIExpert
+                            <span className="mt-2 block text-sky-400">Sample Report</span>
+                        </h1>
+                        <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
+                            A comprehensive vehicle inspection report combines a structured 400-point inspection, vehicle-health scoring, issue documentation, AI-powered analysis, tyre assessment and photographic evidence.
+                        </p>
+                        <div className="mt-8 flex flex-wrap justify-start gap-2.5 sm:gap-3">
+                            <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:text-sm">✓ 400-Point Inspection</span>
+                            <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:text-sm">✓ AI Summary</span>
+                            <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:text-sm">✓ Photo Evidence</span>
+                            <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:text-sm">✓ Tyre Analysis</span>
+                            <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:text-sm">✓ Overall Health Score</span>
+                        </div>
                     </div>
 
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
-                        See What a Professional Vehicle Inspection Report Looks Like
-                    </p>
-                    <h1 className="mx-auto mt-5 max-w-5xl text-4xl font-black leading-tight tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+                    {/* Right: animated AI report scanning illustration */}
+                    <div className="relative mx-auto w-full max-w-[600px]">
+                        <div aria-hidden="true" className="absolute -inset-5 rounded-[2.5rem] bg-sky-400/10 blur-2xl" />
+                        <div className="relative overflow-hidden rounded-[1.75rem] border border-sky-300/25 bg-[#101D31] p-4 shadow-[0_25px_90px_rgba(0,0,0,0.4)] sm:p-6">
+                            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-sky-300/25 bg-sky-400/10 text-sky-300">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-6 w-6" aria-hidden="true"><path d="M7 3.5h7l4 4V21H7z" strokeLinejoin="round"/><path d="M14 3.5V8h4M10 12h5M10 15h5M10 18h3" strokeLinecap="round"/></svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-bold text-white">AI Report Analyzer</p>
+                                        <p className="mt-0.5 text-xs text-slate-400">Reading inspection findings</p>
+                                    </div>
+                                </div>
+                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-300"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-300"/>Analyzing</span>
+                            </div>
 
-                        CarPDIExpert
+                            <div className="relative mt-5 overflow-hidden rounded-2xl border border-white/10 bg-[#0B1423] p-4 sm:p-5">
+                                <div className="mb-5 flex items-start justify-between gap-4">
+                                    <div>
+                                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-sky-300">Vehicle inspection report</p>
+                                        <p className="mt-2 text-lg font-black text-white sm:text-xl">Inspection Summary</p>
+                                        <p className="mt-1 text-xs text-slate-400">Sample vehicle · Report analysis</p>
+                                    </div>
+                                    <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-full border-4 border-emerald-400/70 bg-emerald-400/10 shadow-[0_0_25px_rgba(52,211,153,0.12)]">
+                                        <span className="text-lg font-black text-emerald-300">98%</span>
+                                        <span className="text-[8px] font-bold uppercase tracking-wider text-slate-300">Health</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    {[
+                                        ["Engine & mechanical", "99%", "w-[99%]"],
+                                        ["Transmission", "100%", "w-full"],
+                                        ["Exterior body", "96%", "w-[96%]"],
+                                    ].map(([label, score, width]) => (
+                                        <div key={label} className="rounded-xl border border-white/[0.07] bg-white/[0.035] p-3">
+                                            <div className="mb-2 flex items-center justify-between gap-3"><span className="text-xs font-medium text-slate-300">{label}</span><span className="text-xs font-bold text-sky-300">{score}</span></div>
+                                            <div className="h-1.5 overflow-hidden rounded-full bg-white/10"><div className={`h-full rounded-full bg-gradient-to-r from-sky-500 to-cyan-300 ${width}`} /></div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {/* Horizontal blue scan line travels through the report */}
+                                <style>{`
+                                  @keyframes pdi-report-horizontal-scan {
+                                    0% { top: 0%; opacity: 0.25; }
+                                    8% { opacity: 1; }
+                                    92% { opacity: 1; }
+                                    100% { top: 100%; opacity: 0.25; }
+                                  }
+                                  @media (prefers-reduced-motion: reduce) {
+                                    .pdi-report-scan-line { animation: none !important; }
+                                  }
+                                `}</style>
+                                <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+                                    <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-cyan-300/[0.08] to-transparent" />
+                                    <div className="pdi-report-scan-line absolute inset-x-3 h-px bg-sky-300 shadow-[0_0_8px_2px_rgba(56,189,248,0.55)]" style={{ animation: "pdi-report-horizontal-scan 2.8s linear infinite" }} />
+                                </div>
+                            </div>
 
-                        <span className="mt-2 block text-sky-400">
-
-                            {" "}Sample Report
-
-                        </span>
-
-                    </h1>
-
-                    <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
-A comprehensive vehicle inspection report combines a structured 400-point inspection, vehicle-health scoring, issue documentation, AI-powered analysis, tyre assessment and photographic evidence.
-                    </p>
-
-<div className="relative mt-8 flex flex-wrap justify-center gap-2.5 sm:gap-3">
-    <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:px-4 sm:text-sm">
-        ✓ 400-Point Inspection
-    </span>
-
-    <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:px-4 sm:text-sm">
-        ✓ AI Summary
-    </span>
-
-    <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:px-4 sm:text-sm">
-        ✓ Photo Evidence
-    </span>
-
-    <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:px-4 sm:text-sm">
-        ✓ Tyre Analysis
-    </span>
-
-    <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-2 text-xs font-semibold text-slate-100 sm:px-4 sm:text-sm">
-        ✓ Overall Health Score
-    </span>
-</div>
+                            <div className="mt-4 grid grid-cols-2 gap-3">
+                                <div className="rounded-xl border border-white/10 bg-white/[0.035] p-3.5">
+                                    <div className="flex items-center gap-2 text-sky-300"><span className="text-base">✦</span><span className="text-[10px] font-bold uppercase tracking-wider">AI insights</span></div>
+                                    <p className="mt-2 text-xs leading-5 text-slate-300">Findings organized into clear recommendations.</p>
+                                </div>
+                                <div className="rounded-xl border border-white/10 bg-white/[0.035] p-3.5">
+                                    <div className="flex items-center gap-2 text-emerald-300"><span className="text-base">✓</span><span className="text-[10px] font-bold uppercase tracking-wider">Report ready</span></div>
+                                    <p className="mt-2 text-xs leading-5 text-slate-300">Scores, issues and evidence in one view.</p>
+                                </div>
+                            </div>
+                            <p className="mt-4 text-center text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500">Inspect · Analyze · Understand</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 

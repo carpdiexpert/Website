@@ -182,7 +182,7 @@ svg {
 
 @keyframes pdi-scan-center {
   from {
-    left: 10%;
+    left: 40%;
   }
   to {
     left: 60%;
@@ -192,6 +192,6 @@ svg {
 @media (prefers-reduced-motion: reduce) {
   .pdi-scan-vertical {
     animation: none;
-    left: 30%;
+    left: 50%;
   }
 }

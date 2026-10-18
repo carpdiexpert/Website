@@ -164,30 +164,93 @@ export default function HowItWorksPage() {
         <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-blue-600/20 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-32 left-1/4 h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
 
-        <div className="relative mx-auto max-w-[1440px] px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
-            CarpdiExpert / How it works
-          </p>
+        <div className="relative mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_0.9fr] lg:gap-16 lg:px-12 lg:py-24">
+          <div className="relative z-10">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
+              CarpdiExpert / How it works
+            </p>
 
-          <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-[-0.055em] sm:text-5xl lg:text-6xl">
-            From booking to report.
-            <span className="mt-2 block text-sky-400">
-              Four simple steps.
-            </span>
-          </h1>
+            <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+              From booking to report.
+              <span className="mt-2 block text-sky-400">
+                Four simple steps.
+              </span>
+            </h1>
 
-          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-            Get a clearer picture of the car you are buying with a straightforward
-            inspection process, from your first request to the final findings.
-          </p>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+              Get a clearer picture of the car you are buying with a straightforward
+              inspection process, from your first request to the final findings.
+            </p>
 
-          <Link
-            href="/#book-inspection"
-            className="mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-sky-400 px-7 py-3 text-sm font-bold text-[#0B1220] transition hover:bg-sky-300"
-          >
-            Book an inspection <span aria-hidden="true">↗</span>
-          </Link>
+            <Link
+              href="/#book-inspection"
+              className="mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-sky-400 px-7 py-3 text-sm font-bold text-[#0B1220] transition hover:bg-sky-300"
+            >
+              Book an inspection <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+
+          {/* Rotating inspection process dial */}
+          <div className="relative mx-auto flex w-full max-w-[540px] items-center justify-center py-5 sm:py-8">
+            <div aria-hidden="true" className="absolute h-[85%] w-[85%] rounded-full bg-sky-400/10 blur-3xl" />
+
+            <div className="pdi-process-dial relative aspect-square w-full max-w-[500px]">
+              <div aria-hidden="true" className="absolute inset-[5%] rounded-full border border-sky-300/15" />
+              <div aria-hidden="true" className="absolute inset-[13%] rounded-full border border-dashed border-sky-300/30" />
+              <div aria-hidden="true" className="absolute inset-[22%] rounded-full border border-sky-300/20" />
+
+<div
+  aria-hidden="true"
+  className="absolute inset-[7%] animate-spin rounded-full border-2 border-transparent border-t-sky-300 border-r-sky-400/70 motion-reduce:animate-none"
+  style={{ animationDuration: "12s" }}
+>
+
+                <span className="absolute -right-1 top-[48%] h-3 w-3 rounded-full bg-cyan-200 shadow-[0_0_18px_rgba(103,232,249,0.95)]" />
+              </div>
+
+              {steps.map((step, index) => {
+                const positions = [
+                  "left-1/2 top-[1%] -translate-x-1/2",
+                  "right-[1%] top-1/2 -translate-y-1/2",
+                  "left-1/2 bottom-[1%] -translate-x-1/2",
+                  "left-[1%] top-1/2 -translate-y-1/2",
+                ];
+                return (
+                  <div
+                    key={step.number}
+                    className={`absolute z-10 ${positions[index]}`}
+                  >
+                    <div className="flex w-[112px] flex-col items-center gap-2 text-center sm:w-[132px]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-sky-300/50 bg-[#10243A] text-sm font-black text-sky-200 shadow-[0_0_22px_rgba(56,189,248,0.16)] sm:h-14 sm:w-14">
+                        {step.number}
+                      </div>
+                      <span className="max-w-[112px] text-xs font-bold leading-4 text-white sm:max-w-[132px] sm:text-sm">
+                        {step.title}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+
+              <div className="absolute inset-[31%] flex flex-col items-center justify-center rounded-full border border-sky-300/30 bg-gradient-to-br from-[#132A43] via-[#0B1A2D] to-[#071321] text-center shadow-[0_0_45px_rgba(14,165,233,0.16)]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-sky-300/30 bg-sky-300/10 text-sky-300 sm:h-14 sm:w-14">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-7 w-7 sm:h-8 sm:w-8" aria-hidden="true">
+                    <path d="m3 13 2-2 2-5h10l2 5 2 2v5h-3v-2H6v2H3z" strokeLinejoin="round" />
+                    <path d="M7 6 6 4m11 2 1-2M6 13h.01M18 13h.01M8 10h8" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <span className="mt-3 text-[10px] font-black uppercase tracking-[0.18em] text-sky-300 sm:text-xs">
+                  CarPDIExpert
+                </span>
+                <span className="mt-1 text-xs font-bold text-white sm:text-sm">
+                  Your car. Checked.
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
+
+
       </section>
 
       {/* 400 inspection checkpoints highlight */}

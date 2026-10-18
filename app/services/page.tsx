@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 
 import Link from "next/link";
+import Image from "next/image";
 import { CITIES } from "@/lib/cities";
 
 
@@ -151,45 +152,67 @@ export default function ServicesPage() {
         />
 
         <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-24">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
-            CarPDIExpert / Services
-          </p>
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            {/* Left: hero copy */}
+            <div className="relative z-10">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
+                CarPDIExpert / Services
+              </p>
 
-          <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight tracking-[-0.055em] sm:text-5xl lg:text-6xl">
-            Inspect with confidence.
-            <span className="mt-2 block text-sky-400">
-              Decide with clarity.
-            </span>
-          </h1>
+              <h1 className="mt-5 max-w-3xl text-4xl font-black leading-tight tracking-[-0.055em] sm:text-5xl lg:text-6xl">
+                Inspect with confidence.
+                <span className="mt-2 block text-sky-400">
+                  Decide with clarity.
+                </span>
+              </h1>
 
-          <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
-            Independent vehicle inspections for new cars, used cars, luxury
-            vehicles and EVs. Get documented observations about the vehicle&apos;s
-            condition before making your buying decision.
-          </p>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+                Independent vehicle inspections for new cars, used cars, luxury
+                vehicles and EVs. Get documented observations about the vehicle&apos;s
+                condition before making your buying decision.
+              </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="#inspection-options"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-sky-400 px-7 py-3 text-sm font-bold text-[#0B1220] transition hover:bg-sky-300"
-            >
-              Compare our services <span aria-hidden="true">↓</span>
-            </Link>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  href="#inspection-options"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-sky-400 px-7 py-3 text-sm font-bold text-[#0B1220] transition hover:bg-sky-300"
+                >
+                  Compare our services <span aria-hidden="true">↓</span>
+                </Link>
 
-            <Link
-              href="#city-pricing"
-              className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/[0.04] px-7 py-3 text-sm font-bold text-white transition hover:border-sky-400/60 hover:bg-sky-400/10"
-            >
-              View city pricing
-            </Link>
+                <Link
+                  href="#city-pricing"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 bg-white/[0.04] px-7 py-3 text-sm font-bold text-white transition hover:border-sky-400/60 hover:bg-sky-400/10"
+                >
+                  View city pricing
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: single hero image */}
+            <div className="relative mx-auto w-full max-w-xl">
+              <div aria-hidden="true" className="pointer-events-none absolute -inset-5 rounded-[2.5rem] bg-sky-400/10 blur-2xl" />
+              <div className="relative h-[280px] overflow-hidden rounded-[2rem] border border-white/10 bg-slate-800/70 shadow-[0_24px_70px_rgba(0,0,0,0.35)] sm:h-[360px] lg:h-[420px]">
+                <Image
+                  src="/car-services.png"
+                  alt="Car inspection services"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 90vw, 560px"
+                  className="object-cover"
+                />
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#0B1220]/40 via-transparent to-transparent" />
+              </div>
+            </div>
           </div>
 
-          {/* Hero trust and feature highlights */}
-          <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {heroFeatures.map((feature) => (
+          {/* Keep the four compact horizontal feature cards with a gentle staggered bounce */}
+          <div className="mt-10 grid max-w-6xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {heroFeatures.map((feature, index) => (
               <article
                 key={feature.title}
-                className="rounded-2xl border border-white/10 bg-white/[0.045] p-5 backdrop-blur-sm transition hover:border-sky-400/30 hover:bg-white/[0.07]"
+                className="rounded-2xl border border-white/10 bg-white/[0.045] p-4 backdrop-blur-sm transition hover:border-sky-400/30 hover:bg-white/[0.07] motion-safe:animate-[bounce_5s_ease-in-out_infinite]"
+                style={{ animationDelay: `${index * 180}ms`, animationDuration: `${5 + index * 0.25}s` }}
               >
                 <p className="text-lg font-black tracking-tight text-sky-300 sm:text-xl">
                   {feature.number}
