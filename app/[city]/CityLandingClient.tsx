@@ -9,8 +9,11 @@ type Props = {
   citySlug: string;
 };
 
-const WHATSAPP_NUMBER = ""; // Business number with country code, digits only.
 
+  const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "").replace(
+    /\D/g,
+    ""
+  );
 const inputClass =
   "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition-colors duration-200 placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-100";
 
@@ -89,9 +92,9 @@ export default function CityLandingClient({ citySlug }: Props) {
   function submitEnquiry(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!WHATSAPP_NUMBER) {
+    if (!whatsapp) {
       window.alert(
-        "Please configure WHATSAPP_NUMBER in CityLandingClient.tsx."
+        "Please configure NEXT_PUBLIC_WHATSAPP_NUMBER in your environment variables."
       );
       return;
     }
@@ -110,7 +113,7 @@ export default function CityLandingClient({ citySlug }: Props) {
     ].join("\n");
 
     window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`,
       "_blank",
       "noopener,noreferrer"
     );
