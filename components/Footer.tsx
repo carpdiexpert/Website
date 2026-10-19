@@ -128,7 +128,7 @@ export default function Footer() {
         {/* Copyright and credit */}
         <div className="mt-12 flex flex-col gap-3 border-t border-white/15 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 CarpdiExpert. All rights reserved.</p>
-          <p>Made for more informed car buying.</p>
+
           <p>
             Website by{" "}
             <a
@@ -140,6 +140,7 @@ export default function Footer() {
               3dVishwa Software Solutions
             </a>
           </p>
+                    <p>Made for more informed car buying.</p>
         </div>
       </div>
     </footer>
