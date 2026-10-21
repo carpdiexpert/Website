@@ -5,7 +5,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useCity } from "@/components/CityProvider";
 import { CITIES } from "@/lib/cities";
 import { CITY_OPTIONS } from "@/lib/cityOptions";
-import { CAR_DATA } from "@/lib/carData";
 import { BOOKING_SLOTS } from "@/lib/slots";
 
 const cities = CITY_OPTIONS;
@@ -25,6 +24,14 @@ const slotLabels: Record<string, string> = {
   "15:00": "3:00 PM",
   "16:30": "4:30 PM",
   "18:00": "6:00 PM",
+};
+
+type CarModelRecord = {
+  id: string;
+  brand: string;
+  model: string;
+  category?: string;
+  active?: boolean;
 };
 
 const inputClass =
@@ -66,6 +73,12 @@ function price(city: string, type: string): number | null {
   if (type === "used") return config.usedCar;
 
   return null;
+}
+
+function normalizeCarCategory(category?: string): "standard" | "luxury" | "ev" {
+  const normalized = category?.trim().toLowerCase();
+  if (normalized === "luxury" || normalized === "ev") return normalized;
+  return "standard";
 }
 
 function getHeatmapStyle(info?: DayAvailability) {
@@ -195,9 +208,75 @@ export default function BookingChatbot() {
   const [minDate, setMinDate] = useState("");
   const [slot, setSlot] = useState("");
   const [available, setAvailable] = useState<string[]>([]);
+  const [carModels, setCarModels] = useState<CarModelRecord[]>([]);
+  const [carModelsLoading, setCarModelsLoading] = useState(true);
+  const [carModelsError, setCarModelsError] = useState("");
   const [dateAvailability, setDateAvailability] = useState<
     Record<string, DayAvailability>
   >({});
+
+  // Load the active car catalogue from the public, read-only API backed by Firebase.
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadCarModels() {
+      setCarModelsLoading(true);
+      setCarModelsError("");
+
+      try {
+        const response = await fetch("/api/car-models", { cache: "no-store" });
+        const data: unknown = await response.json();
+
+        if (!response.ok) {
+          const errorMessage =
+            data && typeof data === "object" && "error" in data &&
+            typeof data.error === "string"
+              ? data.error
+              : "Could not load car brands and models.";
+          throw new Error(errorMessage);
+        }
+
+        const rawModels = Array.isArray(data)
+          ? data
+          : data && typeof data === "object" && "models" in data && Array.isArray(data.models)
+            ? data.models
+            : [];
+
+        const cleaned: CarModelRecord[] = rawModels
+          .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === "object")
+          .filter((item) => item.active === true)
+          .filter((item) => typeof item.brand === "string" && item.brand.trim() && typeof item.model === "string" && item.model.trim())
+          .map((item) => ({
+            id: typeof item.id === "string" ? item.id : `${String(item.brand)}-${String(item.model)}`,
+            brand: (item.brand as string).trim(),
+            model: (item.model as string).trim(),
+            category: typeof item.category === "string" ? item.category : undefined,
+            active: true,
+          }));
+
+        if (!cancelled) setCarModels(cleaned);
+      } catch (error) {
+        if (!cancelled) {
+          setCarModels([]);
+          setCarModelsError(
+            error instanceof Error ? error.message : "Could not load car brands and models."
+          );
+        }
+      } finally {
+        if (!cancelled) setCarModelsLoading(false);
+      }
+    }
+
+    void loadCarModels();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const carBrands = useMemo(
+    () => Array.from(new Set(carModels.map((item) => item.brand))).sort((a, b) => a.localeCompare(b)),
+    [carModels]
+  );
 
   // Stable initial state prevents current-time prerender errors.
   const [calendarMonth, setCalendarMonth] = useState(
@@ -224,9 +303,28 @@ export default function BookingChatbot() {
     inspectionType: "standard",
   });
 
+  const availableCarModels = useMemo(
+    () => carModels
+      .filter((item) => item.brand === form.carBrand)
+      .map((item) => item.model)
+      .filter((model, index, models) => models.indexOf(model) === index)
+      .sort((a, b) => a.localeCompare(b)),
+    [carModels, form.carBrand]
+  );
+
+  const selectedCarModel = useMemo(
+    () => carModels.find(
+      (item) => item.brand === form.carBrand && item.model === form.carModel
+    ),
+    [carModels, form.carBrand, form.carModel]
+  );
+
+  const selectedModelCategory = normalizeCarCategory(selectedCarModel?.category);
+  const isUsedCar = form.inspectionType === "used";
+
   const totalPrice = useMemo(
-    () => price(city, form.inspectionType),
-    [city, form.inspectionType]
+    () => price(city, isUsedCar ? "used" : selectedModelCategory),
+    [city, isUsedCar, selectedModelCategory]
   );
 
   const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "").replace(
@@ -450,11 +548,52 @@ export default function BookingChatbot() {
   }, [city, date]);
 
   function update(key: string, value: string) {
-    setForm((current) => ({
-      ...current,
-      [key]: value,
-      ...(key === "carBrand" ? { carModel: "" } : {}),
-    }));
+    setForm((current) => {
+      if (key === "carBrand") {
+        return {
+          ...current,
+          carBrand: value,
+          carModel: "",
+          inspectionType: current.inspectionType === "used" ? "used" : "standard",
+        };
+      }
+
+      if (key === "carModel") {
+        const selected = carModels.find(
+          (item) => item.brand === current.carBrand && item.model === value
+        );
+        return {
+          ...current,
+          carModel: value,
+          inspectionType:
+            current.inspectionType === "used"
+              ? "used"
+              : normalizeCarCategory(selected?.category),
+        };
+      }
+
+      return { ...current, [key]: value };
+    });
+
+    setMessage("");
+    setBookingConfirmed(false);
+    setBookingReference("");
+  }
+
+  function selectCarCondition(condition: "new" | "used") {
+    setForm((current) => {
+      if (condition === "used") {
+        return { ...current, inspectionType: "used" };
+      }
+
+      const selected = carModels.find(
+        (item) => item.brand === current.carBrand && item.model === current.carModel
+      );
+      return {
+        ...current,
+        inspectionType: normalizeCarCategory(selected?.category),
+      };
+    });
 
     setMessage("");
     setBookingConfirmed(false);
@@ -764,8 +903,8 @@ export default function BookingChatbot() {
                       value={form.carBrand}
                       onChange={(event) => update("carBrand", event.target.value)}
                     >
-                      <option value="">Select brand</option>
-                      {Object.keys(CAR_DATA).map((brand) => (
+                      <option value="">{carModelsLoading ? "Loading brands…" : "Select brand"}</option>
+                      {carBrands.map((brand) => (
                         <option key={brand} value={brand}>{brand}</option>
                       ))}
                     </select>
@@ -777,28 +916,80 @@ export default function BookingChatbot() {
                       className={`${inputClass} mt-1`}
                       value={form.carModel}
                       onChange={(event) => update("carModel", event.target.value)}
-                      disabled={!form.carBrand}
+                      disabled={!form.carBrand || carModelsLoading || availableCarModels.length === 0}
                     >
-                      <option value="">Select model</option>
-                      {(CAR_DATA[form.carBrand] || []).map((model) => (
+                      <option value="">{carModelsLoading ? "Loading models…" : "Select model"}</option>
+                      {availableCarModels.map((model) => (
                         <option key={model} value={model}>{model}</option>
                       ))}
                     </select>
                   </label>
                 </div>
+                {carModelsError && (
+                  <p role="alert" className="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-800">
+                    {carModelsError} Please ensure the public read-only /api/car-models endpoint is configured.
+                  </p>
+                )}
+                {!carModelsLoading && !carModelsError && carModels.length === 0 && (
+                  <p className="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-800">
+                    No active car models were found in the catalogue.
+                  </p>
+                )}
 
-                <label className="block text-xs font-semibold text-slate-700">
-                  Inspection type
-                  <select
-                    className={`${inputClass} mt-1`}
-                    value={form.inspectionType}
-                    onChange={(event) => update("inspectionType", event.target.value)}
-                  >
-                    {Object.entries(typeLabels).map(([key, label]) => (
-                      <option key={key} value={key}>{label}</option>
-                    ))}
-                  </select>
-                </label>
+                <fieldset className="space-y-2">
+                  <legend className="text-xs font-semibold text-slate-700">
+                    What type of car do you have?
+                  </legend>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      aria-pressed={!isUsedCar}
+                      onClick={() => selectCarCondition("new")}
+                      className={`rounded-2xl border p-3 text-left transition ${
+                        !isUsedCar
+                          ? "border-sky-500 bg-sky-50 ring-2 ring-sky-100"
+                          : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2 text-sm font-bold text-slate-900">
+                        <span aria-hidden="true" className="text-lg">🚘</span>
+                        New Car
+                      </span>
+                      <span className="mt-1 block text-[11px] leading-relaxed text-slate-500">
+                        Pre-delivery inspection (PDI)
+                      </span>
+                      <span className="mt-2 block text-xs font-bold text-sky-700">
+                        {isUsedCar ? "Select" : "Selected"}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={isUsedCar}
+                      onClick={() => selectCarCondition("used")}
+                      className={`rounded-2xl border p-3 text-left transition ${
+                        isUsedCar
+                          ? "border-sky-500 bg-sky-50 ring-2 ring-sky-100"
+                          : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2 text-sm font-bold text-slate-900">
+                        <span aria-hidden="true" className="text-lg">🚗</span>
+                        Used Car
+                      </span>
+                      <span className="mt-1 block text-[11px] leading-relaxed text-slate-500">
+                        Pre-purchase inspection (PPI)
+                      </span>
+                      <span className="mt-2 block text-xs font-bold text-sky-700">
+                        {isUsedCar ? "Selected" : "Select"}
+                      </span>
+                    </button>
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-slate-500">
+                    {isUsedCar
+                      ? "Used-car PPI pricing is fixed and does not change with the selected car category."
+                      : `New-car PDI pricing is based on the selected model category: ${typeLabels[selectedModelCategory]}.`}
+                  </p>
+                </fieldset>
 
                 <div className="rounded-2xl bg-sky-50 px-3.5 py-3">
                   <p className="text-xs text-slate-600">Estimated inspection price</p>
