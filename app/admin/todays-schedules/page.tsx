@@ -500,7 +500,7 @@ export default function SchedulesPage() {
                           ? ` · ${slot.remaining} left`
                           : ""
                       }`
-                    : "Fully booked"}
+                    : "Booked"}
                 </p>
               </div>
             ))}

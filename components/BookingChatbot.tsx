@@ -648,6 +648,12 @@ export default function BookingChatbot() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const mobileDigits = form.mobile.replace(/\\D/g, "");
+    if (mobileDigits.length !== 10) {
+      setMessage("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
     if (!slot) {
       setMessage("Please select an available time slot.");
       return;
@@ -661,7 +667,14 @@ export default function BookingChatbot() {
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, city, date, slot }),
+        body: JSON.stringify({
+          ...form,
+          mobile: form.mobile.replace(/\\D/g, ""),
+          type: isUsedCar ? "used-car-inspection" : "new-car-inspection",
+          city,
+          date,
+          slot,
+        }),
       });
 
       const data = await response.json();
@@ -841,11 +854,18 @@ export default function BookingChatbot() {
                     <input
                       required
                       type="tel"
-                      autoComplete="tel"
-                      pattern="[+0-9 ()-]{8,20}"
+                      inputMode="numeric"
+                      autoComplete="tel-national"
+                      maxLength={10}
+                      minLength={10}
+                      pattern="[0-9]{10}"
+                      title="Enter exactly 10 digits"
+                      placeholder="10-digit mobile number"
                       className={`${inputClass} mt-1`}
                       value={form.mobile}
-                      onChange={(event) => update("mobile", event.target.value)}
+                      onChange={(event) =>
+                        update("mobile", event.target.value.replace(/\\D/g, "").slice(0, 10))
+                      }
                     />
                   </label>
                 </div>
@@ -883,9 +903,8 @@ export default function BookingChatbot() {
                     />
                   </label>
                   <label className="text-xs font-semibold text-slate-700">
-                    Full address
+                    Full address (optional)
                     <textarea
-                      required
                       rows={2}
                       className={`${inputClass} mt-1 resize-y`}
                       value={form.address}

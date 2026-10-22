@@ -60,9 +60,15 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Standard, subtle text selection */
 ::selection {
-  background: var(--primary);
-  color: #ffffff;
+  background: #cfe8ff;
+  color: #1f2937;
+}
+
+::-moz-selection {
+  background: #cfe8ff;
+  color: #1f2937;
 }
 
 a {

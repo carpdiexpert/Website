@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -77,8 +76,8 @@ const faqs = [
 ];
 
 export default function FAQsPage() {
-
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -248,9 +247,8 @@ export default function FAQsPage() {
 
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
 
-
             <a
-              href="https://wa.me/919975934213"
+              href={`https://wa.me/${whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-8 py-4 text-base font-bold text-slate-800 transition-colors duration-200 hover:border-sky-300 hover:text-sky-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2"

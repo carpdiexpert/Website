@@ -7,13 +7,15 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
 const items = [
-  { label: "Dashboard", href: "/admin", icon: "▦" },
+  { label: "Dashboard", href: "/admin/dashboard", icon: "▦" },
   { label: "Bookings", href: "/admin/bookings", icon: "▤" },
   { label: "Today's Schedules", href: "/admin/todays-schedules", icon: "◷" },
   { label: "Manage Inspectors", href: "/admin/manage-inspectors", icon: "♙" },
+  { label: "Approve PDI Reports", href: "/admin/approve", icon: "◫" },
   { label: "Manage Slots", href: "/admin/manage-slots", icon: "◫" },
   { label: "Analytics", href: "/admin/analytics", icon: "▥" },
   { label: "Manage Car Models", href: "/admin/manage-car-models", icon: "▱" },
+
 ];
 
 export default function AdminAppShell({ children, email }: { children: React.ReactNode; email?: string | null }) {
@@ -26,7 +28,7 @@ export default function AdminAppShell({ children, email }: { children: React.Rea
     setSigningOut(true);
     try {
       await signOut(auth);
-      router.replace("/admin");
+      router.replace("/login");
     } finally {
       setSigningOut(false);
     }

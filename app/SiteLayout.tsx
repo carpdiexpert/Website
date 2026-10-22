@@ -1,4 +1,3 @@
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -12,10 +11,11 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const isAdminRoute =
-    pathname === "/admin" || pathname.startsWith("/admin/");
+  const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+  // Inspector routes are standalone application screens: no public-site chrome.
+  const isInspectorRoute = pathname === "/inspector" || pathname.startsWith("/inspector/");
 
-  if (isAdminRoute) {
+  if (isAdminRoute || isInspectorRoute) {
     return <>{children}</>;
   }
 
