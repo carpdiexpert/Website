@@ -147,7 +147,7 @@ export default function InspectorMyPdisPage() {
       date: booking.date, slot: booking.slot, location: booking.location || booking.address,
       city: booking.city, inspectionLabel: booking.inspectionLabel, inspectionType: booking.inspectionType,
     }));
-    router.push("/inspector");
+    router.push("/inspect");
   }
 
   if (loading || !user || !profile) return <main className="flex min-h-screen items-center justify-center bg-slate-100 p-6"><div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-semibold text-slate-600 shadow-sm">Verifying inspector access…</div></main>;
