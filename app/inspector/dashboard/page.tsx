@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { User } from "firebase/auth";
 import InspectorAppShell from "@/app/inspector/InspectorAppShell";
 import { useInspectorSession } from "@/lib/useInspectorSession";
@@ -17,6 +17,7 @@ export default function InspectorDashboardPage() {
   const [locationError, setLocationError] = useState("");
   const [locationMessage, setLocationMessage] = useState("");
   const [savingLocation, setSavingLocation] = useState(false);
+  const locationRequestedFor = useRef<string | null>(null);
 
   const loadBookings = useCallback(
     async (currentUser: User, silent = false) => {
@@ -119,7 +120,7 @@ export default function InspectorDashboardPage() {
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
           setLocationError(
-            "Location permission is blocked. Enable Location for this website in your browser's site settings, then click Enable Location again. You can continue using the dashboard without it."
+            "Location permission was denied. Enable Location for this website in your browser's site settings. The dashboard will continue working without it."
           );
         } else if (error.code === error.TIMEOUT) {
           setLocationError(
@@ -139,6 +140,14 @@ export default function InspectorDashboardPage() {
       }
     );
   }, []);
+
+  // Request location automatically once when the signed-in inspector loads.
+  // If permission is prompt, the browser may show its native permission dialog.
+  useEffect(() => {
+    if (!user || !profile?.uid || locationRequestedFor.current === user.uid) return;
+    locationRequestedFor.current = user.uid;
+    void saveLocation(user);
+  }, [user, profile?.uid, saveLocation]);
 
   const counts = useMemo(() => {
     const labels = bookings.map((booking) => getTiming(booking, now).label);
@@ -235,41 +244,20 @@ export default function InspectorDashboardPage() {
       </section>
 
       <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-50 text-xl" aria-hidden="true">📍</span>
           <div>
             <h2 className="font-extrabold text-slate-900">Inspector Location</h2>
-            <p className="mt-1 max-w-2xl text-sm leading-5 text-slate-600">
-              Share your current location to save your coordinates for
-              inspection coordination. Location access is optional, and the
-              dashboard works if you choose not to share it.
+            <p className="mt-1 text-sm leading-5 text-slate-600">
+              When this dashboard loads, your browser is asked for location access.
+              If you allow it, your coordinates are saved to your inspector record.
+              The dashboard remains usable if location is unavailable or denied.
             </p>
+            {savingLocation && <p role="status" className="mt-3 text-sm font-semibold text-sky-700">Getting your location and saving it…</p>}
+            {locationMessage && <p role="status" className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-semibold text-emerald-800">{locationMessage}</p>}
+            {locationError && <p role="alert" className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm leading-5 text-amber-900">{locationError}</p>}
           </div>
-          <button
-            type="button"
-            onClick={() => void saveLocation(user)}
-            disabled={savingLocation}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <span aria-hidden="true">📍</span>
-            {savingLocation ? "Getting location…" : "Enable Location"}
-          </button>
         </div>
-        {locationMessage && (
-          <p
-            role="status"
-            className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-semibold text-emerald-800"
-          >
-            {locationMessage}
-          </p>
-        )}
-        {locationError && (
-          <p
-            role="alert"
-            className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm leading-5 text-amber-900"
-          >
-            {locationError}
-          </p>
-        )}
       </section>
 
       {bookingsError && (
