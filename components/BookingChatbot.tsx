@@ -289,6 +289,7 @@ export default function BookingChatbot() {
   const [message, setMessage] = useState("");
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [bookingReference, setBookingReference] = useState("");
+  const [trackingUrl, setTrackingUrl] = useState("");
 
   const chatbotRef = useRef<HTMLElement | null>(null);
   const launcherRef = useRef<HTMLButtonElement | null>(null);
@@ -604,6 +605,7 @@ export default function BookingChatbot() {
     setMessage("");
     setBookingConfirmed(false);
     setBookingReference("");
+    setTrackingUrl("");
   }
 
   function selectDate(day: number) {
@@ -648,8 +650,8 @@ export default function BookingChatbot() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const mobileDigits = form.mobile.replace(/\\D/g, "");
-    if (mobileDigits.length !== 10) {
+    // Accept Indian mobile numbers as exactly 10 digits (no country code or separators).
+    if (!/^[0-9]{10}$/.test(form.mobile)) {
       setMessage("Please enter a valid 10-digit mobile number.");
       return;
     }
@@ -667,14 +669,7 @@ export default function BookingChatbot() {
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...form,
-          mobile: form.mobile.replace(/\\D/g, ""),
-          type: isUsedCar ? "used-car-inspection" : "new-car-inspection",
-          city,
-          date,
-          slot,
-        }),
+        body: JSON.stringify({ ...form, city, date, slot }),
       });
 
       const data = await response.json();
@@ -686,7 +681,31 @@ export default function BookingChatbot() {
       const reference = String(data.bookingId || "");
 
       setBookingReference(reference);
-      setBookingConfirmed(true);
+
+      // The booking API returns a URL containing the private tracking token.
+      // Convert relative URLs (for example /track/<token>) to a complete,
+      // shareable link on the current site.
+      const returnedTrackingUrl =
+        typeof data.trackingUrl === "string" ? data.trackingUrl.trim() : "";
+
+      if (returnedTrackingUrl) {
+        try {
+          const resolvedUrl = new URL(returnedTrackingUrl, window.location.origin);
+          // Only allow this site's own tracking URL; do not render arbitrary API URLs.
+          setTrackingUrl(
+            resolvedUrl.origin === window.location.origin &&
+              resolvedUrl.pathname.startsWith("/track/")
+              ? resolvedUrl.href
+              : ""
+          );
+        } catch {
+          setTrackingUrl("");
+        }
+      } else {
+        setTrackingUrl("");
+      }
+
+        setBookingConfirmed(true);
       setMessage(
         `Your booking has been confirmed! Reference: ${reference || "Confirmed"}.`
       );
@@ -803,15 +822,31 @@ export default function BookingChatbot() {
                   </div>
                 </div>
 
-                {whatsappUrl && (
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 flex w-full items-center justify-center rounded-xl bg-emerald-600 px-4 py-3.5 text-sm font-bold text-white hover:bg-emerald-700"
-                  >
-                    WhatsApp admin for queries
-                  </a>
+                {trackingUrl ? (
+                  <div className="mt-4">
+                    <a
+                      href={`https://wa.me/91${form.mobile}?text=${encodeURIComponent(
+                        `Hi ${form.name || "there"}, here is your CarPDIExpert booking tracking link: ${trackingUrl}\n\nUse this link anytime to check your booking status.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-full items-center justify-center rounded-xl bg-emerald-600 px-4 py-4 text-sm font-bold text-white transition hover:bg-emerald-700"
+                    >
+                      Send booking link to WhatsApp
+                    </a>
+                    <p className="mt-2 text-center text-xs leading-relaxed text-slate-500">
+                      WhatsApp will open a chat with your own number and prepare the message. Tap Send in WhatsApp to save the link to your chat.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3">
+                    <p className="text-sm font-bold text-amber-900">
+                      Booking confirmed, tracking link unavailable
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-amber-800">
+                      Your booking was created successfully, but the booking API did not return a tracking URL. Please check that POST /api/bookings generates and returns trackingUrl.
+                    </p>
+                  </div>
                 )}
 
                 <button
@@ -856,17 +891,19 @@ export default function BookingChatbot() {
                       type="tel"
                       inputMode="numeric"
                       autoComplete="tel-national"
-                      maxLength={10}
-                      minLength={10}
                       pattern="[0-9]{10}"
-                      title="Enter exactly 10 digits"
+                      minLength={10}
+                      maxLength={10}
+                      title="Enter exactly 10 digits, without +91 or spaces."
                       placeholder="10-digit mobile number"
                       className={`${inputClass} mt-1`}
                       value={form.mobile}
-                      onChange={(event) =>
-                        update("mobile", event.target.value.replace(/\\D/g, "").slice(0, 10))
-                      }
+                      aria-describedby="mobile-validation-help"
+                      onChange={(event) => update("mobile", event.target.value.replace(/\D/g, "").slice(0, 10))}
                     />
+                    <span id="mobile-validation-help" className="mt-1 block text-[11px] font-normal text-slate-500">
+                      Enter exactly 10 digits. Do not include +91 or spaces.
+                    </span>
                   </label>
                 </div>
 
@@ -903,8 +940,9 @@ export default function BookingChatbot() {
                     />
                   </label>
                   <label className="text-xs font-semibold text-slate-700">
-                    Full address (optional)
+                    Full address
                     <textarea
+                      required
                       rows={2}
                       className={`${inputClass} mt-1 resize-y`}
                       value={form.address}

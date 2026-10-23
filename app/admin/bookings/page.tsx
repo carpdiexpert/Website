@@ -1252,6 +1252,7 @@ export default function BookingsPage() {
 
     <AdminAppShell email={user.email}>
 
+      <div className="pb-16 sm:pb-20">
       <header className="mb-6">
 
         <p className="text-sm font-bold text-sky-600">Operations / Bookings</p>
@@ -1462,7 +1463,7 @@ export default function BookingsPage() {
 
       </section>
 
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <section className={`relative rounded-2xl border border-slate-200 bg-white shadow-sm ${openStatusMenu ? "z-30" : "z-0"}`}>
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5">
 
@@ -1490,7 +1491,7 @@ export default function BookingsPage() {
 
               return (
 
-                <article key={booking.id} className="px-3 py-3 transition hover:bg-slate-50 sm:px-4">
+                <article key={booking.id} className={`relative px-3 py-3 transition hover:bg-slate-50 sm:px-4 ${openStatusMenu === booking.id ? "z-40" : "z-0"}`}>
 
                   <div className="grid gap-3 lg:grid-cols-[minmax(250px,1fr)_minmax(0,1.4fr)] lg:items-center">
 
@@ -1532,7 +1533,7 @@ export default function BookingsPage() {
                         {actionBusy === booking.id ? "Saving…" : status} <span className="ml-2">⌄</span>
                       </button>
                       {openStatusMenu === booking.id && (
-                        <div className="absolute right-0 top-full z-40 mt-2 min-w-44 overflow-hidden rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl">
+                        <div className="absolute right-0 bottom-full z-[100] mb-2 min-w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl">
                           {BOOKING_STATUSES.map((item) => (
                             <button key={item} type="button" onClick={() => { setOpenStatusMenu(null); void changeBookingStatus(booking, item); }} className={`block w-full rounded-lg px-3 py-2 text-left text-xs font-bold capitalize hover:bg-slate-50 ${status === item ? "bg-indigo-50 text-indigo-700" : "text-slate-700"}`}>
                               {item === "confirmed" ? "✓ " : ""}{item}
@@ -1736,6 +1737,7 @@ export default function BookingsPage() {
         );
 
       })()}
+      </div>
 
     </AdminAppShell>
 

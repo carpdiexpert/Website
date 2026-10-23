@@ -1,31 +1,40 @@
+
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BookingChatbot from "@/components/BookingChatbot";
 
-export default function SiteLayout({
+function SiteLayoutContent({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
 
   const isAdminRoute =
     pathname === "/admin" || pathname.startsWith("/admin/");
 
   const isInspectorRoute =
-    pathname === "/inspector" || pathname.startsWith("/inspector/");
+    pathname === "/inspector" ||
+    pathname.startsWith("/inspector/");
 
   const isLoginRoute = pathname === "/login";
 
   const isInspectRoute =
-    pathname === "/inspect" || pathname.startsWith("/inspect/");
+    pathname === "/inspect" ||
+    pathname.startsWith("/inspect/");
 
   // Hide public-site chrome and floating chatbot/WhatsApp controls
   // on admin, inspector, login, and inspection workspace routes.
-  if (isAdminRoute || isInspectorRoute || isLoginRoute || isInspectRoute) {
+  if (
+    isAdminRoute ||
+    isInspectorRoute ||
+    isLoginRoute ||
+    isInspectRoute
+  ) {
     return <>{children}</>;
   }
 
@@ -36,5 +45,17 @@ export default function SiteLayout({
       <Footer />
       <BookingChatbot />
     </>
+  );
+}
+
+export default function SiteLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Suspense fallback={null}>
+      <SiteLayoutContent>{children}</SiteLayoutContent>
+    </Suspense>
   );
 }

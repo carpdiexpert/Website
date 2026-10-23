@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createHash, randomBytes } from "node:crypto";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebase-admin";
 import { CITIES, getCity } from "@/lib/cities";
@@ -229,6 +230,9 @@ export async function POST(request: Request) {
     }
 
     const bookingRef = db.collection("bookings").doc();
+    // High-entropy, unguessable customer tracking credential. Store only its hash.
+    const trackingToken = randomBytes(32).toString("base64url");
+    const trackingTokenHash = createHash("sha256").update(trackingToken).digest("hex");
     const lockSlot = slot.replace(":", "-");
     const dayRef = db.collection("blockedSlots").doc(dayBlockId(city, date));
     const slotRef = db.collection("blockedSlots").doc(slotBlockId(city, date, slot));
@@ -271,6 +275,7 @@ export async function POST(request: Request) {
       });
       transaction.create(bookingRef, {
         name: body.name.trim().slice(0, 120),
+        trackingTokenHash,
         mobile: body.mobile.trim().slice(0, 30),
         city: cityNames[city],
         citySlug: city,
@@ -293,6 +298,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       bookingId: bookingRef.id,
+      trackingToken,
+      trackingUrl: `/track/${trackingToken}`,
       price: priceFor(city, type),
       city,
       date,
